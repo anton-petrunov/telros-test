@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    url: jdbc:hsqldb:mem:telros-test
+    username: sa
+    password:
+    driver-class-name: org.hsqldb.jdbc.JDBCDriver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    open-in-view: false
+  sql:
+    init:
+      mode: always
+      platform: hsqldb
