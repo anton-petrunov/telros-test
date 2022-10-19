@@ -16,3 +16,7 @@ spring:
     init:
       mode: always
       platform: hsqldb
+  # https://stackoverflow.com/a/64333853
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
