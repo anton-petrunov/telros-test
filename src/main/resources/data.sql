@@ -8,7 +8,7 @@ FROM users;
 INSERT INTO users (LAST_NAME, FIRST_NAME, PATRONYMIC, BIRTHDAY)
 VALUES ('petrunov', 'anton', 'nikolaevich', '1984-11-17'),
        ('Sochnev', 'Ignat', 'Ivanovich', '2000-10-30'),
-       ('Ivanov', 'Denis', null, '2000-01-01')
+       ('Ivanov', 'Denis', null, '2000-01-01');
 
 INSERT INTO contacts (user_id, type, VALUE)
 VALUES (0, 'EMAIL', 'petrunov.ru@gmail.com'),
