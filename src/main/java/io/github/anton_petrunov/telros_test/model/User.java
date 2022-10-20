@@ -1,16 +1,17 @@
 package io.github.anton_petrunov.telros_test.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
-import org.springframework.data.jpa.domain.AbstractPersistable;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.validation.constraints.Email;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -19,7 +20,7 @@ import java.util.Date;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @ToString
-public class User extends AbstractPersistable<Integer> {
+public class User extends BaseEntity {
 
     @Column(name = "last_name", nullable = false)
     @NotEmpty
@@ -40,12 +41,13 @@ public class User extends AbstractPersistable<Integer> {
     @Column(name = "birthday", nullable = false)
     private Date birthday;
 
-    @Column(name = "email", nullable = false)
-    @Email
-    @Size(min = 3, max = 128)
-    private String email;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonManagedReference
+    List<Contact> contacts;
 
-    @Column(name = "phone", nullable = false)
-    @Size(min = 5, max = 15)
-    private String phone;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonManagedReference
+    Set<Photo> photos;
 }
