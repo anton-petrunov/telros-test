@@ -4,25 +4,62 @@ import io.github.anton_petrunov.telros_test.model.User;
 import io.github.anton_petrunov.telros_test.repositoty.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.Optional;
+import javax.validation.Valid;
+import java.net.URI;
+import java.util.List;
+
+import static io.github.anton_petrunov.telros_test.util.ValidationUtil.*;
 
 @RestController
-@RequestMapping(value = "/users")
+@RequestMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
 @Slf4j
 public class UserRestController {
 
     private final UserRepository userRepository;
 
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Optional<User> get(@PathVariable Integer id) {
+    @GetMapping(value = "/{id}")
+    public User get(@PathVariable Integer id) {
         log.info("get user {}", id);
-        return userRepository.findById(id);
+        return checkNotFoundWithId(userRepository.findById(id).orElseThrow(), id);
+    }
+
+    @GetMapping
+    public List<User> getAll() {
+        log.info("getAll users");
+        return userRepository.findAll();
+    }
+
+    @DeleteMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Integer id) {
+        userRepository.deleteById(id);
+    }
+
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public ResponseEntity<User> create(@Valid @RequestBody User user) {
+        log.info("create new user {}", user);
+        checkNew(user);
+        user = userRepository.save(user);
+        URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/users/{id}")
+                .build().toUri();
+        return ResponseEntity.created(uriOfNewResource).body(user);
+    }
+
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void update(@Valid @RequestBody User user, @PathVariable Integer id) {
+        User updated = userRepository.findById(id).orElseThrow();
+        checkNotFoundWithId(updated, id);
+        assureIdConsistent(user, id);
+        userRepository.save(user);
     }
 }
