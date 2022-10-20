@@ -22,3 +22,7 @@ spring:
       matching-strategy: ant_path_matcher
   jackson:
     date-format: 'dd MMMM yyyy'
+  security:
+    user:
+      name: admin
+      password: admin
