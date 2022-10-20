@@ -4,10 +4,7 @@ import lombok.*;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.util.ProxyUtils;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 
 @MappedSuperclass
 @Access(AccessType.FIELD)
@@ -19,6 +16,7 @@ import javax.persistence.MappedSuperclass;
 public abstract class BaseEntity implements Persistable<Integer> {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Integer id;
 
     @Override
