@@ -41,12 +41,12 @@ public class User extends BaseEntity {
     @Column(name = "birthday", nullable = false)
     private Date birthday;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonManagedReference
     List<Contact> contacts;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonManagedReference
     Set<Photo> photos;
