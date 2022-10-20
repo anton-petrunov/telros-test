@@ -1,5 +1,6 @@
 package io.github.anton_petrunov.telros_test.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.util.ProxyUtils;
@@ -20,6 +21,7 @@ public abstract class BaseEntity implements Persistable<Integer> {
     protected Integer id;
 
     @Override
+    @JsonIgnore
     public boolean isNew() {
         return id == null;
     }
