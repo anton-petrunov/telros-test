@@ -17,10 +17,11 @@ import java.util.List;
 import static io.github.anton_petrunov.telros_test.util.ValidationUtil.*;
 
 @RestController
-@RequestMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = UserRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
 @Slf4j
 public class UserRestController {
+    static final String REST_URL = "/users";
 
     private final UserRepository userRepository;
 
@@ -49,7 +50,7 @@ public class UserRestController {
         checkNew(user);
         user = userRepository.save(user);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/users/{id}")
+                .path(REST_URL + "/{id}")
                 .build().toUri();
         return ResponseEntity.created(uriOfNewResource).body(user);
     }
