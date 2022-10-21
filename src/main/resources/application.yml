@@ -20,8 +20,10 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-  jackson:
-    date-format: 'dd MMMM yyyy'
+
+  # Not working correctly
+  #  jackson:
+  #    date-format: 'dd MMMM yyyy'
   security:
     user:
       name: admin
